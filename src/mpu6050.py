@@ -1,6 +1,7 @@
 import machine
 # este arquivo não foi desenvolvido por mim, utilizei dele pois não encontrei
 # a biblioteca do sensor de temperatura
+# trigger actions
 
 
 class accel():
