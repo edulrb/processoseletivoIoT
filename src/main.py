@@ -71,6 +71,7 @@ while True:
     condicoes_seguras = not porta_aberta and (variacao_termica < LIMITE_VARIACAO_Y)
     
     if erro_ativo and condicoes_seguras:
+        time.sleep_ms(600)
         print("Status: Sistema Normalizado.")
         
         erro_ativo = False
