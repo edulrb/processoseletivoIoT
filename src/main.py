@@ -5,7 +5,7 @@ import time
 LIMITE_TEMPO_X = 5000
 LIMITE_VARIACAO_Y = 3.0
 
-estado_botao = 0
+estado_botao = 1 
 porta_aberta = False
 alertado_porta_aberta = False
 tempo_porta_aberta = 0
@@ -17,7 +17,7 @@ i2c = I2C(0, scl=Pin(21), sda=Pin(22))
 sensor = mpu6050.accel(i2c)
 botao = Pin(27, Pin.IN, Pin.PULL_UP)
 
-time.sleep_ms(100)
+time.sleep_ms(10)
 temperatura_porta_fechada = sensor.get_values()["Tmp"]
 
 def alertar(tipo_de_alerta):
@@ -34,7 +34,7 @@ def alertar(tipo_de_alerta):
 def trocou_de_estado(anterior, atual):
     global porta_aberta, tempo_porta_aberta, temperatura_atual, temperatura_porta_fechada
     
-    if anterior == 1 and atual == 0: 
+    if anterior == 1 and atual == 0:
         temperatura_porta_fechada = temperatura_atual
         porta_aberta = True
         tempo_porta_aberta = time.ticks_ms()
@@ -50,10 +50,13 @@ while True:
     tempo_atual = time.ticks_ms()
     
     checagem_anterior = estado_botao
-    estado_botao = int(not botao.value())
+    estado_botao = int(not botao.value()) 
 
     if estado_botao != checagem_anterior:
         trocou_de_estado(checagem_anterior, estado_botao)
+
+    if not porta_aberta and temperatura_atual < temperatura_porta_fechada:
+        temperatura_porta_fechada = temperatura_atual
 
     #CHECANDO SE O ALERTA ESTÁ ATIVO E PASSOU DOS 5000ms
     tempo_decorrido = time.ticks_diff(tempo_atual, tempo_porta_aberta)
@@ -75,4 +78,4 @@ while True:
         variacao_alertada = False
 
     #DELAY PARA EVITAR DEBOUNCE
-    time.sleep_ms(100)
+    time.sleep_ms(10)
