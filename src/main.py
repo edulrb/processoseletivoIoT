@@ -71,7 +71,7 @@ while True:
     condicoes_seguras = not porta_aberta and (variacao_termica < LIMITE_VARIACAO_Y)
     
     if erro_ativo and condicoes_seguras:
-        print("Status: Sistema Normalizado")
+        print("Status: Sistema Normalizado.")
         
         erro_ativo = False
         alertado_porta_aberta = False
